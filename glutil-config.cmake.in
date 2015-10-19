@@ -1,3 +1,18 @@
 set (GLUTIL_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include)
 set (GLUTIL_FOUND TRUE)
 set (GLUTIL_GLSL2CPP ${CMAKE_INSTALL_PREFIX}/bin/glsl2cpp)
+
+macro (glutil_add_shader _NAMELIST INPUT OUTPUT)
+        get_filename_component (INPUTFILE ${INPUT} ABSOLUTE)
+        set (NAMELIST "${_NAMELIST}")
+        list (GET NAMELIST -1 NAME)
+        list (REMOVE_AT NAMELIST -1)
+        set (PREFIX_ARGS "")
+        set (SUFFIX_ARGS "")
+        foreach(PART ${NAMELIST})
+                set (PREFIX_ARGS ${PREFIX_ARGS} -P "namespace ${PART} {")
+                set (SUFFIX_ARGS -A "} /* namespace ${PART} */" ${SUFFIX_ARGS})
+        endforeach()
+        add_custom_command (OUTPUT ${OUTPUT} COMMAND ${GLUTIL_GLSL2CPP} -S source -H "<glutil/shader.h>" ${PREFIX_ARGS}
+                -P "extern const struct source ${NAME};" ${SUFFIX_ARGS} ${NAME} ${INPUTFILE} ${OUTPUT} DEPENDS ${INPUTFILE} VERBATIM)
+endmacro (glutil_add_shader)

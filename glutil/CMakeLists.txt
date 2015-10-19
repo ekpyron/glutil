@@ -1,8 +1,5 @@
 find_package (OGLP REQUIRED)
 
-set (GLUTIL_SOURCES CircularBuffer.cpp FullscreenQuad.cpp LoadProgram.cpp LoadTexture.cpp
-        SimpleAllocator.cpp StaticBufferManager.cpp)
-
 file (MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/shaders)
 add_custom_command (OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/shaders/fsquad.cpp
                     COMMAND glsl2cpp -S source
@@ -15,6 +12,10 @@ add_custom_command (OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/shaders/fsquad.cpp
                     DEPENDS glsl2cpp ${CMAKE_CURRENT_SOURCE_DIR}/shaders/fsquad.glsl
                                      ${CMAKE_CURRENT_SOURCE_DIR}/shader.h
                     VERBATIM)
+
+set (GLUTIL_SOURCES CircularBuffer.cpp FullscreenQuad.cpp LoadProgram.cpp LoadTexture.cpp
+        SimpleAllocator.cpp StaticBufferManager.cpp lz4/lz4.c lz4/lz4hc.c
+        ${CMAKE_CURRENT_BINARY_DIR}/shaders/fsquad.cpp)
 
 add_library (glutil SHARED ${GLUTIL_SOURCES})
 

@@ -5,7 +5,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 add_subdirectory (util)
 add_subdirectory (glutil)
-add_subdirectory (contrib)
 
 configure_file (glutil-config.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/glutil-config.cmake)
 
