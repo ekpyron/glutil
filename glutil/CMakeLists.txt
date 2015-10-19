@@ -15,7 +15,7 @@ add_custom_command (OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/shaders/fsquad.cpp
 
 set (GLUTIL_SOURCES CircularBuffer.cpp FullscreenQuad.cpp LoadProgram.cpp LoadTexture.cpp
         SimpleAllocator.cpp StaticBufferManager.cpp lz4/lz4.c lz4/lz4hc.c
-        ${CMAKE_CURRENT_BINARY_DIR}/shaders/fsquad.cpp)
+        ${CMAKE_CURRENT_BINARY_DIR}/shaders/fsquad.cpp AttribPacker.cpp AttribPacker.h)
 
 add_library (glutil SHARED ${GLUTIL_SOURCES})
 
