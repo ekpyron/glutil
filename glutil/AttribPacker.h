@@ -41,7 +41,7 @@ public:
     void *GetData (void);
     size_t GetSize (void);
 private:
-    void pack (uint8_t *ptr, size_t size);
+    void pack (const uint8_t *ptr, size_t size);
     std::vector<uint8_t> data;
 };
 
