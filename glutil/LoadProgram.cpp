@@ -26,7 +26,7 @@
 
 namespace glutil {
 
-shaderdesc::shaderdesc (const std::string &_name, const GLenum &_type, const shader::source_t &_source)
+shaderdesc::shaderdesc (const std::string &_name, const GLenum &_type, const shadersource_t &_source)
         : name (_name), type (_type)
 {
     std::vector<char> src;

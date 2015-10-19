@@ -13,6 +13,6 @@ macro (glutil_add_shader _NAMELIST INPUT OUTPUT)
                 set (PREFIX_ARGS ${PREFIX_ARGS} -P "namespace ${PART} {")
                 set (SUFFIX_ARGS -A "} /* namespace ${PART} */" ${SUFFIX_ARGS})
         endforeach()
-        add_custom_command (OUTPUT ${OUTPUT} COMMAND ${GLUTIL_GLSL2CPP} -S source -H "<glutil/shader.h>" ${PREFIX_ARGS}
-                -P "extern const struct source ${NAME};" ${SUFFIX_ARGS} ${NAME} ${INPUTFILE} ${OUTPUT} DEPENDS ${INPUTFILE} VERBATIM)
+        add_custom_command (OUTPUT ${OUTPUT} COMMAND ${GLUTIL_GLSL2CPP} -S "glutil::shadersource" -H "<glutil/shader.h>" ${PREFIX_ARGS}
+                -P "extern const struct glutil::shadersource ${NAME};" ${SUFFIX_ARGS} ${NAME} ${INPUTFILE} ${OUTPUT} DEPENDS ${INPUTFILE} VERBATIM)
 endmacro (glutil_add_shader)

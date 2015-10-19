@@ -32,7 +32,7 @@
 namespace glutil {
 
 typedef struct shaderdesc {
-    shaderdesc (const std::string &name, const GLenum &type, const shader::source_t &source);
+    shaderdesc (const std::string &name, const GLenum &type, const glutil::shadersource_t &source);
     shaderdesc (const std::string &name, const GLenum &type, const std::string &source);
     std::string name;
     GLenum type;

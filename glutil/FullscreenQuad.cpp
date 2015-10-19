@@ -25,7 +25,7 @@
 #include "LoadProgram.h"
 #include <limits>
 
-GLUTIL_IMPORT_SHADER(fsquad)
+GLUTIL_IMPORT_SHADER(shader, fsquad)
 
 namespace glutil {
 

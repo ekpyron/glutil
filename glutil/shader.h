@@ -26,17 +26,17 @@
 
 #include <stdint.h>
 
-namespace shader {
+namespace glutil {
 
-typedef struct source
+typedef struct shadersource
 {
     uint32_t length;
     const uint8_t *data;
-} source_t;
+} shadersource_t;
 
-} /* namespace shader */
+} /* namespace glutil */
 
-#define _GLUTIL_IMPORT_SHADER_1(_1) extern const struct source _1;
+#define _GLUTIL_IMPORT_SHADER_1(_1) extern const struct glutil::shadersource _1;
 #define _GLUTIL_IMPORT_SHADER_2(_1,_2) namespace _1 { _GLUTIL_IMPORT_SHADER_1 (_2) }
 #define _GLUTIL_IMPORT_SHADER_3(_1,_2,_3) namespace _1 { _GLUTIL_IMPORT_SHADER_2 (_2,_3) }
 #define _GLUTIL_IMPORT_SHADER_4(_1,_2,_3,_4) namespace _1 { _GLUTIL_IMPORT_SHADER_3 (_2,_3,_4) }
@@ -45,8 +45,8 @@ typedef struct source
 #define _GLUTIL_IMPORT_SHADER_7(_1,_2,_3,_4,_5,_6,_7) namespace _1 { _GLUTIL_IMPORT_SHADER_6 (_2,_3,_4,_5,_6,_7) }
 #define _GLUTIL_IMPORT_SHADER_8(_1,_2,_3,_4,_5,_6,_7,_8) namespace _1 { _GLUTIL_IMPORT_SHADER_7 (_2,_3,_4,_5,_6,_7,_8) }
 #define _GLUTIL_IMPORT_SHADER_GETMACRO(_1,_2,_3,_4,_5,_6,_7,_8,NAME,...) NAME
-#define GLUTIL_IMPORT_SHADER(...) namespace shader { _GLUTIL_IMPORT_SHADER_GETMACRO(__VA_ARGS__,\
+#define GLUTIL_IMPORT_SHADER(...) _GLUTIL_IMPORT_SHADER_GETMACRO(__VA_ARGS__,\
 _GLUTIL_IMPORT_SHADER_8, _GLUTIL_IMPORT_SHADER_7, _GLUTIL_IMPORT_SHADER_6, _GLUTIL_IMPORT_SHADER_5,\
-_GLUTIL_IMPORT_SHADER_4, _GLUTIL_IMPORT_SHADER_3, _GLUTIL_IMPORT_SHADER_2, _GLUTIL_IMPORT_SHADER_1)(__VA_ARGS__) }
+_GLUTIL_IMPORT_SHADER_4, _GLUTIL_IMPORT_SHADER_3, _GLUTIL_IMPORT_SHADER_2, _GLUTIL_IMPORT_SHADER_1)(__VA_ARGS__)
 
 #endif /* !defined GLUTIL_SHADER_H */
