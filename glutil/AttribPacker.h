@@ -35,7 +35,7 @@ public:
     ~AttribPacker (void);
     template<typename T>
     AttribPacker &operator<< (const T &t) {
-        pack (reinterpret_cast<uint8_t*> (&t), sizeof (t));
+        pack (reinterpret_cast<const uint8_t*> (&t), sizeof (t));
         return *this;
     }
     void *GetData (void);
