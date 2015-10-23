@@ -1,22 +1,14 @@
 find_package (OGLP REQUIRED)
 find_package (LZ4 REQUIRED)
 
-file (MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/shaders)
-add_custom_command (OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/shaders/fsquad.cpp
-                    COMMAND glsl2cpp -S "glutil::shadersource"
-                                     -H "<glutil/shader.h>"
-                                     -P "namespace shader {"
-                                     -P "extern const struct glutil::shadersource fsquad;"
-                                     -A "} /* namespace shader */"
-                                    fsquad ${CMAKE_CURRENT_SOURCE_DIR}/shaders/fsquad.glsl
-                                    ${CMAKE_CURRENT_BINARY_DIR}/shaders/fsquad.cpp
-                    DEPENDS glsl2cpp ${CMAKE_CURRENT_SOURCE_DIR}/shaders/fsquad.glsl
-                                     ${CMAKE_CURRENT_SOURCE_DIR}/shader.h
-                    VERBATIM)
+include (${CMAKE_BINARY_DIR}/glutil-config.cmake)
 
-set (GLUTIL_SOURCES CircularBuffer.cpp FullscreenQuad.cpp LoadProgram.cpp LoadTexture.cpp
+file (MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/shaders)
+glutil_add_shader ("shader;fsquad" ${CMAKE_CURRENT_SOURCE_DIR}/shaders/fsquad.glsl ${CMAKE_CURRENT_BINARY_DIR}/shaders/fsquad.cpp)
+
+set (GLUTIL_SOURCES CircularBuffer.cpp detail/FullscreenQuadImpl.cpp LoadProgram.cpp LoadTexture.cpp
         SimpleAllocator.cpp StaticBufferManager.cpp ${CMAKE_CURRENT_BINARY_DIR}/shaders/fsquad.cpp
-        AttribPacker.cpp AttribPacker.h)
+        AttribPacker.cpp AttribPacker.h FullscreenQuad.cpp FullscreenQuad.h)
 
 add_library (glutil SHARED ${GLUTIL_SOURCES})
 

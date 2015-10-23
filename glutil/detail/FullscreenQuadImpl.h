@@ -21,43 +21,42 @@
  *
  */
 
+#ifndef GLUTIL_DETAIL_FULLSCREENQUADIMPL_H
+#define GLUTIL_DETAIL_FULLSCREENQUADIMPL_H
 
-#include "FullscreenQuad.h"
-#include "detail/FullscreenQuadImpl.h"
+#include <oglp/oglp.h>
+#include <memory>
+#include <mutex>
 
 namespace glutil {
+namespace detail {
 
-FullscreenQuad::FullscreenQuad (void) : impl (detail::FullscreenQuadImpl::GetInstance ()) {
-}
+class FullscreenQuadImpl
+{
+public:
+    static std::shared_ptr<FullscreenQuadImpl> GetInstance (void) {
+        static std::weak_ptr<FullscreenQuadImpl> instance;
+        static std::mutex mutex;
+        const std::lock_guard<std::mutex> lock (mutex);
+        std::shared_ptr<FullscreenQuadImpl> result = instance.lock ();
+        if (!result) instance = (result = std::make_shared<FullscreenQuadImpl> ());
+        return result;
+    }
+    FullscreenQuadImpl(void);
+	FullscreenQuadImpl(const FullscreenQuadImpl &) = delete;
+	~FullscreenQuadImpl(void);
+	FullscreenQuadImpl &operator= (const FullscreenQuadImpl &) = delete;
+	void Render (void) const;
+    const gl::Program &GetVertexProgram (void) const {
+		return program;
+	}
+private:
+ 	gl::Program program;
+	gl::VertexArray vao;
+	gl::Buffer buffer;
+};
 
-FullscreenQuad::FullscreenQuad (const FullscreenQuad &fsquad) : impl (fsquad.impl) {
-}
-
-FullscreenQuad::FullscreenQuad (FullscreenQuad &&fsquad) : impl (std::move (fsquad.impl)) {
-
-}
-
-FullscreenQuad::~FullscreenQuad (void) {
-}
-
-FullscreenQuad &FullscreenQuad::operator=(const FullscreenQuad &fsquad) {
-    impl = fsquad.impl;
-    return *this;
-}
-
-FullscreenQuad &FullscreenQuad::operator= (FullscreenQuad &&fsquad) noexcept {
-    impl = std::move (fsquad.impl);
-    return *this;
-}
-
-void FullscreenQuad::Render (void) const {
-    assert (impl);
-    impl->Render ();
-}
-
-const gl::Program &FullscreenQuad::GetVertexProgram (void) const {
-    assert (impl);
-    return impl->GetVertexProgram ();
-}
-
+} /* namespace detail */
 } /* namespace glutil */
+
+#endif /* !defined GLUTIL_DETAIL_FULLSCREENQUADIMPL_H */

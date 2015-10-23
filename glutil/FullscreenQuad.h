@@ -25,24 +25,27 @@
 #define GLUTIL_FULLSCREENQUAD_H
 
 #include <oglp/oglp.h>
+#include <memory>
 
 namespace glutil {
 
-class FullscreenQuad
-{
+namespace detail {
+class FullscreenQuadImpl;
+} /* namespace detail */
+
+class FullscreenQuad {
 public:
-	FullscreenQuad (void);
-	FullscreenQuad (const FullscreenQuad&) = delete;
-	~FullscreenQuad (void);
-	FullscreenQuad &operator= (const FullscreenQuad&) = delete;
-	void Render (void) const;
-    const gl::Program &GetVertexProgram (void) const {
-		return program;
-	}
+    FullscreenQuad (void);
+    FullscreenQuad (const FullscreenQuad &fsquad);
+    FullscreenQuad (FullscreenQuad &&fsquad);
+    ~FullscreenQuad (void);
+    FullscreenQuad &operator= (const FullscreenQuad &fsquad);
+    FullscreenQuad &operator= (FullscreenQuad &&fsquad) noexcept;
+
+    void Render (void) const;
+    const gl::Program &GetVertexProgram (void) const;
 private:
-	gl::Program program;
-	gl::VertexArray vao;
-	gl::Buffer buffer;
+    std::shared_ptr<detail::FullscreenQuadImpl> impl;
 };
 
 } /* namespace glutil */

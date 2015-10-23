@@ -24,11 +24,9 @@
 #ifndef GLUTIL_SIMPLEALLOCATOR_H
 #define GLUTIL_SIMPLEALLOCATOR_H
 
-#include "Allocator.h"
-
 namespace glutil {
 
-class SimpleAllocator : public Allocator
+class SimpleAllocator
 {
 public:
 	SimpleAllocator (unsigned long size = 0);

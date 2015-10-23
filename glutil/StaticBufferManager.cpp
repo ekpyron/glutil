@@ -80,7 +80,19 @@ StaticBufferManager::StaticBufferManager (unsigned long _blocksize, Allocator *_
 
 StaticBufferManager::~StaticBufferManager (void)
 {
-	delete allocator;
+}
+
+StaticBufferManager::StaticBufferManager (StaticBufferManager &&manager)
+		: blocksize (manager.blocksize), buffersize (manager.buffersize), allocator (std::move (manager.allocator)),
+		  buffer (std::move (manager.buffer)) {
+}
+
+StaticBufferManager &StaticBufferManager::operator=(StaticBufferManager &&manager) {
+	blocksize = manager.blocksize;
+	buffersize = manager.buffersize;
+	allocator = std::move (manager.allocator);
+	buffer = std::move (manager.buffer);
+	return *this;
 }
 
 StaticBuffer StaticBufferManager::Allocate (unsigned long size, unsigned long alignment)

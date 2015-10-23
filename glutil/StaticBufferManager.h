@@ -25,7 +25,9 @@
 #define GLUTIL_STATICBUFFERMANAGER_H
 
 #include <oglp/oglp.h>
+#include <memory>
 #include "Allocator.h"
+#include "SimpleAllocator.h"
 
 namespace glutil {
 
@@ -62,11 +64,15 @@ private:
 class StaticBufferManager
 {
 public:
-	StaticBufferManager (unsigned long blocksize, Allocator *allocator);
+	template<typename Allocator = SimpleAllocator, typename... Args>
+	StaticBufferManager (unsigned long blocksize, Args... args) : StaticBufferManager (blocksize, new Allocator (args...)) {
+	}
 	StaticBufferManager (const StaticBufferManager&) = delete;
+	StaticBufferManager (StaticBufferManager &&manager);
 	~StaticBufferManager (void);
 
 	StaticBufferManager &operator= (const StaticBufferManager&) = delete;
+	StaticBufferManager &operator= (StaticBufferManager &&manager);
 	StaticBuffer Allocate (unsigned long size, unsigned long alignment = 0);
 
 	const gl::Buffer &GetBuffer (void) const {
@@ -83,10 +89,11 @@ public:
 	}
 #endif
 private:
+	StaticBufferManager (unsigned long blocksize, Allocator *allocator);
 	void Free (unsigned long offset, unsigned long size);
 	void SetData (unsigned long offset, unsigned long size, gl::Buffer &src);
 	gl::Buffer buffer;
-	Allocator *allocator;
+	std::unique_ptr<Allocator> allocator;
 	unsigned long buffersize;
 	unsigned long blocksize;
 	friend class StaticBuffer;
