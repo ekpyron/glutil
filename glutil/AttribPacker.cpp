@@ -25,25 +25,4 @@
 
 namespace glutil {
 
-AttribPacker::AttribPacker (void) {
-
-}
-
-AttribPacker::~AttribPacker (void) {
-
-}
-
-void *AttribPacker::GetData (void) {
-    return data.data ();
-}
-
-size_t AttribPacker::GetSize (void) {
-    return data.size ();
-}
-
-void AttribPacker::pack (const uint8_t *ptr, size_t size)
-{
-    data.insert (data.end (), ptr, ptr + size);
-}
-
 } /* namespace glutil */
