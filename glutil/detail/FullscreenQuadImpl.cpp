@@ -34,7 +34,7 @@ FullscreenQuadImpl::FullscreenQuadImpl(void)
 {
 	program.Parameter (GL_PROGRAM_SEPARABLE, GL_TRUE);
 
-    LoadProgram (program, "FSQUAD", "#version 430 core\n", {
+    LoadProgram (program, "FSQUAD", "", {
 		{ "FSQUAD_VERTEX", GL_VERTEX_SHADER, shader::fsquad }
 	});
 

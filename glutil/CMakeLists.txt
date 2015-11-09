@@ -4,6 +4,7 @@ find_package (LZ4 REQUIRED)
 include (${CMAKE_BINARY_DIR}/glutil-config.cmake)
 
 file (MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/shaders)
+set (GLUTIL_GLSL2CPP glsl2cpp)
 glutil_add_shader ("shader;fsquad" ${CMAKE_CURRENT_SOURCE_DIR}/shaders/fsquad.glsl ${CMAKE_CURRENT_BINARY_DIR}/shaders/fsquad.cpp)
 
 set (GLUTIL_SOURCES CircularBuffer.cpp detail/FullscreenQuadImpl.cpp LoadProgram.cpp LoadTexture.cpp

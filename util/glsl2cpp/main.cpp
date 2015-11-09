@@ -267,7 +267,7 @@ bool read_file (const std::string &filename, std::vector<char> &data,
 
 unsigned int source_string_number = 0;
 
-bool parse_file (const std::string &filename, std::string &data,
+bool parse_file (const std::string &filename, std::string &version, std::string &data,
 								 unsigned int my_source_string_number, bool searchinc = false)
 {
 	bool comment = false;
@@ -289,8 +289,17 @@ bool parse_file (const std::string &filename, std::string &data,
 	{
 		if (!comment)
 		{
+			// check for #version directive
+			if (newline && i + 9 < input.size () && !strncmp (&input[i], "#version ", 9)) {
+				while (i < input.size () && input[i] != '\n')
+				{
+					version += input[i];
+					i++;
+				}
+				continue;
+			}
 			// check for #include directive
-			if (newline && i + 9 < input.size ()
+			else if (newline && i + 9 < input.size ()
 					&& !strncmp (&input[i], "#include ", 9))
 			{
 				i += 9;
@@ -307,7 +316,7 @@ bool parse_file (const std::string &filename, std::string &data,
 							 || includefile[includefile.length () - 1] == '\"'
 							 || includefile[includefile.length () - 1] == '>')
 					 includefile.erase (includefile.length () - 1);
-				if (!parse_file (includefile, data, source_string_number++, true))
+				if (!parse_file (includefile, version, data, source_string_number++, true))
 					 return false;
 				
 				{
@@ -386,10 +395,13 @@ int main (int argc, char *argv[])
 		return -1;
 	}
 
+	std::string version;
 	std::string data;
 
-	if (!parse_file (inputfilename, data, source_string_number++, false))
+	if (!parse_file (inputfilename, version, data, source_string_number++, false))
 		 return -1;
+
+	data.insert (data.begin (), version.begin (), version.end ());
 
 	std::vector<unsigned char> output;
 	output.resize (LZ4_compressBound (data.size ()));
