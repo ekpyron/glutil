@@ -296,6 +296,7 @@ bool parse_file (const std::string &filename, std::string &version, std::string 
 					version += input[i];
 					i++;
 				}
+				version += "\n";
 				continue;
 			}
 			// check for #include directive
