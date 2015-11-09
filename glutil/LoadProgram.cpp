@@ -34,11 +34,11 @@ shaderdesc::shaderdesc (const std::string &_name, const GLenum &_type, const sha
     if (LZ4_decompress_fast (reinterpret_cast<const char*> (_source.data), &src[0], _source.length) < 0)
         throw std::runtime_error (std::string ("Failed to load shader ") + name + ": invalid lz4 stream.");
     source = std::string (src.data (), _source.length);
-    version = std::string (_source.version);
+    if (_source.version) version = std::string (_source.version);
 }
 
-shaderdesc::shaderdesc (const std::string &_name, const GLenum &_type, const std::string &_source)
-        : name (_name), type (_type), source (_source)
+shaderdesc::shaderdesc (const std::string &_name, const GLenum &_type, const std::string &_source, const std::string &_version)
+        : name (_name), type (_type), source (_source), version (_version)
 {
 }
 
@@ -50,7 +50,7 @@ void LoadProgram (gl::Program &program, const std::string &name, const std::stri
     for (auto &shader : shaders) {
         shaderobjs.emplace_back (shader.type);
         std::vector<std::string> sources;
-        sources.push_back ("#version " + shader.version + "\n");
+        if (!shader.version.empty ()) sources.push_back ("#version " + shader.version + "\n");
         if (!definitions.empty ()) sources.push_back (definitions);
         sources.push_back (shader.source);
         shaderobjs.back ().Source (sources);

@@ -277,13 +277,6 @@ bool parse_file (const std::string &filename, std::string &version, std::string 
 	if (!read_file (filename, input, searchinc))
 		 return false;
 
-	{
-		std::ostringstream stream;
-		stream << "#line " << line << " "
-					 << my_source_string_number << std::endl;
-		data.append (stream.str ());
-	}
-
 	bool newline = true;
 	for (size_t i = 0; i < input.size (); i++)
 	{
@@ -297,6 +290,11 @@ bool parse_file (const std::string &filename, std::string &version, std::string 
 					version += input[i];
 					i++;
 				}
+				line++;
+				std::ostringstream stream;
+				stream << "#line " << line << " "
+				<< my_source_string_number << std::endl;
+				data.append (stream.str ());
 				continue;
 			}
 			// check for #include directive
@@ -319,7 +317,7 @@ bool parse_file (const std::string &filename, std::string &version, std::string 
 					 includefile.erase (includefile.length () - 1);
 				if (!parse_file (includefile, version, data, source_string_number++, true))
 					 return false;
-				
+
 				{
 					std::ostringstream stream;
 					line++;
@@ -402,8 +400,6 @@ int main (int argc, char *argv[])
 	if (!parse_file (inputfilename, version, data, source_string_number++, false))
 		 return -1;
 
-	data.insert (data.begin (), version.begin (), version.end ());
-
 	std::vector<unsigned char> output;
 	output.resize (LZ4_compressBound (data.size ()));
 
@@ -430,12 +426,23 @@ int main (int argc, char *argv[])
 
 	if (structname != NULL)
 	{
-		out << "const struct " << structname << " " << id << " = { "
-				<< "\"" << version << "\", " << data.size () << ", (const " << typename8 << "[]) {" << std::endl;
+		out << "const struct " << structname << " " << id << " = { ";
+		if (version.empty ()) {
+			out << "nullptr";
+		} else {
+			out << "\"" << version << "\"";
+		}
+		out << ", " << data.size () << ", (const " << typename8 << "[]) {" << std::endl;
 	}
 	else
 	{
-		out << "const char *" << id << "_version = \"" << version << "\";" << std::endl
+		out << "const char *" << id << "_version = ";
+		if (version.empty ()) {
+			out << "nullptr";
+		} else {
+			out << "\"" << version << "\"";
+		}
+		out << ";" << std::endl
 			    << typename32 << " " << id << "_length = "
 				<< std::dec << data.size () << ";" << std::endl
 				<< "const " << typename8 << " " << id << "_data[] = {" << std::endl;
