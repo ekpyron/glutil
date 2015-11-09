@@ -296,7 +296,6 @@ bool parse_file (const std::string &filename, std::string &version, std::string 
 					version += input[i];
 					i++;
 				}
-				version += "\n";
 				continue;
 			}
 			// check for #include directive
@@ -396,8 +395,8 @@ int main (int argc, char *argv[])
 		return -1;
 	}
 
-	std::string version;
 	std::string data;
+	std::string version;
 
 	if (!parse_file (inputfilename, version, data, source_string_number++, false))
 		 return -1;
@@ -431,11 +430,12 @@ int main (int argc, char *argv[])
 	if (structname != NULL)
 	{
 		out << "const struct " << structname << " " << id << " = { "
-				<< data.size () << ", (const " << typename8 << "[]) {" << std::endl;
+				<< "\"" << version << "\", " << data.size () << ", (const " << typename8 << "[]) {" << std::endl;
 	}
 	else
 	{
-		out << typename32 << " " << id << "_length = "
+		out << "const char *" << id << "_version = \"" << version << "\";" << std::endl
+			    << typename32 << " " << id << "_length = "
 				<< std::dec << data.size () << ";" << std::endl
 				<< "const " << typename8 << " " << id << "_data[] = {" << std::endl;
 	}

@@ -30,6 +30,7 @@ namespace glutil {
 
 typedef struct shadersource
 {
+    const char *version;
     uint32_t length;
     const uint8_t *data;
 } shadersource_t;

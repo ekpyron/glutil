@@ -36,6 +36,7 @@ typedef struct shaderdesc {
     shaderdesc (const std::string &name, const GLenum &type, const std::string &source);
     std::string name;
     GLenum type;
+    std::string version;
     std::string source;
 } shaderdesc_t;
 
