@@ -50,7 +50,7 @@ void LoadProgram (gl::Program &program, const std::string &name, const std::stri
     for (auto &shader : shaders) {
         shaderobjs.emplace_back (shader.type);
         std::vector<std::string> sources;
-        sources.push_back (shader.version);
+        sources.push_back ("#version " + shader.version + "\n");
         if (!definitions.empty ()) sources.push_back (definitions);
         sources.push_back (shader.source);
         shaderobjs.back ().Source (sources);

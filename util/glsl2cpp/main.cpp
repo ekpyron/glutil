@@ -291,6 +291,7 @@ bool parse_file (const std::string &filename, std::string &version, std::string 
 		{
 			// check for #version directive
 			if (newline && i + 9 < input.size () && !strncmp (&input[i], "#version ", 9)) {
+				i += 9;
 				while (i < input.size () && input[i] != '\n')
 				{
 					version += input[i];
