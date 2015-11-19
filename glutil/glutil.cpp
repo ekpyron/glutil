@@ -22,7 +22,6 @@
  */
 
 #include "glutil.h"
-#include <oglp/oglp.cxx>
 
 namespace glutil {
 
