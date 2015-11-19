@@ -9,7 +9,7 @@ glutil_add_shader ("shader;fsquad" ${CMAKE_CURRENT_SOURCE_DIR}/shaders/fsquad.gl
 
 set (GLUTIL_SOURCES CircularBuffer.cpp detail/FullscreenQuadImpl.cpp LoadProgram.cpp LoadTexture.cpp
         SimpleAllocator.cpp StaticBufferManager.cpp ${CMAKE_CURRENT_BINARY_DIR}/shaders/fsquad.cpp
-        AttribPacker.cpp AttribPacker.h FullscreenQuad.cpp FullscreenQuad.h)
+        AttribPacker.cpp AttribPacker.h FullscreenQuad.cpp FullscreenQuad.h glutil.cpp glutil.h)
 
 add_library (glutil SHARED ${GLUTIL_SOURCES})
 
