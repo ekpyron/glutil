@@ -18,7 +18,7 @@ target_include_directories (glutil PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOUR
 target_include_directories (glutil SYSTEM PUBLIC ${OGLP_INCLUDE_DIRS})
 target_include_directories (glutil SYSTEM PRIVATE ${LZ4_INCLUDE_DIR})
 
-target_link_libraries (glutil ${LZ4_LIBRARY})
+target_link_libraries (glutil ${LZ4_LIBRARY} ${OGLP_LIBRARIES})
 
 set_property (TARGET glutil PROPERTY COMPILE_FLAGS -std=c++14)
 
